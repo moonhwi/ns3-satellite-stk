@@ -1,0 +1,10 @@
+run 
+attr experiment "wifi-distance-test"
+attr strategy "wifi-default"
+attr measurement ""
+attr description ""
+
+scalar . measurement ""
+scalar node[0] totaltxpacket 810
+
+

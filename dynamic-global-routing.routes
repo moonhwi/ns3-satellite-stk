@@ -1,0 +1,75 @@
+Node: 0, Time: +5.0s, Local time: +5.0s, Ipv4ListRouting table
+  Priority: 10 Protocol: ns3::olsr::RoutingProtocol
+Node: 0, Time: +5.0s, Local time: +5.0s, OLSR Routing table
+Destination		NextHop		Interface	Distance
+10.1.1.2		10.1.1.2		1		1	
+10.1.2.2		10.1.1.2		1		2	
+10.1.3.2		10.1.1.2		1		2	
+ HNA Routing Table: empty
+  Priority: 0 Protocol: ns3::Ipv4StaticRouting
+Node: 0, Time: +5.0s, Local time: +5.0s, Ipv4StaticRouting table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+127.0.0.0       0.0.0.0         255.0.0.0       U     0      -      -   0
+10.1.1.0        0.0.0.0         255.255.255.0   U     0      -      -   1
+
+Node: 1, Time: +5.0s, Local time: +5.0s, Ipv4ListRouting table
+  Priority: 10 Protocol: ns3::olsr::RoutingProtocol
+Node: 1, Time: +5.0s, Local time: +5.0s, OLSR Routing table
+Destination		NextHop		Interface	Distance
+10.1.1.1		10.1.1.1		1		1	
+10.1.2.2		10.1.2.2		2		1	
+10.1.3.2		10.1.3.2		3		1	
+10.1.4.2		10.1.2.2		2		2	
+10.1.5.2		10.1.3.2		3		2	
+ HNA Routing Table: empty
+  Priority: 0 Protocol: ns3::Ipv4StaticRouting
+Node: 1, Time: +5.0s, Local time: +5.0s, Ipv4StaticRouting table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+127.0.0.0       0.0.0.0         255.0.0.0       U     0      -      -   0
+10.1.1.0        0.0.0.0         255.255.255.0   U     0      -      -   1
+10.1.2.0        0.0.0.0         255.255.255.0   U     0      -      -   2
+10.1.3.0        0.0.0.0         255.255.255.0   U     0      -      -   3
+
+Node: 2, Time: +5.0s, Local time: +5.0s, Ipv4ListRouting table
+  Priority: 10 Protocol: ns3::olsr::RoutingProtocol
+Node: 2, Time: +5.0s, Local time: +5.0s, OLSR Routing table
+Destination		NextHop		Interface	Distance
+10.1.2.1		10.1.2.1		1		1	
+10.1.4.2		10.1.4.2		2		1	
+10.1.5.1		10.1.4.2		2		2	
+ HNA Routing Table: empty
+  Priority: 0 Protocol: ns3::Ipv4StaticRouting
+Node: 2, Time: +5.0s, Local time: +5.0s, Ipv4StaticRouting table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+127.0.0.0       0.0.0.0         255.0.0.0       U     0      -      -   0
+10.1.2.0        0.0.0.0         255.255.255.0   U     0      -      -   1
+10.1.4.0        0.0.0.0         255.255.255.0   U     0      -      -   2
+
+Node: 3, Time: +5.0s, Local time: +5.0s, Ipv4ListRouting table
+  Priority: 10 Protocol: ns3::olsr::RoutingProtocol
+Node: 3, Time: +5.0s, Local time: +5.0s, OLSR Routing table
+Destination		NextHop		Interface	Distance
+10.1.3.1		10.1.3.1		1		1	
+10.1.5.2		10.1.5.2		2		1	
+ HNA Routing Table: empty
+  Priority: 0 Protocol: ns3::Ipv4StaticRouting
+Node: 3, Time: +5.0s, Local time: +5.0s, Ipv4StaticRouting table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+127.0.0.0       0.0.0.0         255.0.0.0       U     0      -      -   0
+10.1.3.0        0.0.0.0         255.255.255.0   U     0      -      -   1
+10.1.5.0        0.0.0.0         255.255.255.0   U     0      -      -   2
+
+Node: 4, Time: +5.0s, Local time: +5.0s, Ipv4ListRouting table
+  Priority: 10 Protocol: ns3::olsr::RoutingProtocol
+Node: 4, Time: +5.0s, Local time: +5.0s, OLSR Routing table
+Destination		NextHop		Interface	Distance
+10.1.4.1		10.1.4.1		1		1	
+10.1.5.1		10.1.5.1		2		1	
+ HNA Routing Table: empty
+  Priority: 0 Protocol: ns3::Ipv4StaticRouting
+Node: 4, Time: +5.0s, Local time: +5.0s, Ipv4StaticRouting table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+127.0.0.0       0.0.0.0         255.0.0.0       U     0      -      -   0
+10.1.4.0        0.0.0.0         255.255.255.0   U     0      -      -   1
+10.1.5.0        0.0.0.0         255.255.255.0   U     0      -      -   2
+

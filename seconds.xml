@@ -1,0 +1,15 @@
+<anim ver="netanim-3.108" filetype="animation" >
+<node id="0" sysId="0" locX="5" locY="0" />
+<node id="1" sysId="0" locX="0" locY="0" />
+<node id="2" sysId="0" locX="30" locY="0" />
+<node id="3" sysId="0" locX="0" locY="0" />
+<nu p="c" t="0" id="0" r="255" g="0" b="0" />
+<nu p="c" t="0" id="1" r="255" g="0" b="0" />
+<nu p="c" t="0" id="2" r="255" g="0" b="0" />
+<nu p="c" t="0" id="3" r="255" g="0" b="0" />
+<nu p="s" t="0" id="0" w="1" h="1" />
+<nu p="s" t="0" id="1" w="1" h="1" />
+<nu p="s" t="0" id="2" w="1" h="1" />
+<nu p="s" t="0" id="3" w="1" h="1" />
+<ncs ncId="0" n="RemainingEnergy" t="DOUBLE" />
+</anim>
