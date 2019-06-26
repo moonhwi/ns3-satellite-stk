@@ -1,3 +1,5 @@
+//本次备份目的是为了测试，是否可以只统计ipv4的包
+//发现是不可以的，所以开始测试，路由宝的发送情况，主要是在没有任何traffice的模式下进行测试。
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
 #include "ns3/applications-module.h"
@@ -21,7 +23,8 @@ main( int argc, char *argv[] )
     //GlobalValue::Bind ("SimulatorImplementationType", StringValue ("ns3::RealtimeSimulatorImpl"));
     NodeContainer Satellite;
     Satellite.Create(15);
-    LogComponentEnable("PropagationLossModel", LOG_LEVEL_DEBUG);
+    //LogComponentEnable("Ipv4L3Protocol", LOG_LEVEL_LOGIC);
+    //LogComponentEnable("PropagationLossModel", LOG_LEVEL_DEBUG);
     //LogComponentEnable("OlsrRoutingProtocol", LOG_LEVEL_ALL);
     SpectrumWifiPhyHelper spectrumPhy = SpectrumWifiPhyHelper::Default();
     Config::SetDefault( "ns3::WifiPhy::CcaMode1Threshold", DoubleValue( -62.0 ) );
@@ -57,14 +60,14 @@ main( int argc, char *argv[] )
     positionAlloc->Add (Vector (15, 4, 10));
     positionAlloc->Add (Vector (1, 1, 10));
     mobility.SetPositionAllocator (positionAlloc);
-  mobility.SetMobilityModel( "ns3::GaussMarkovMobilityModel",
+    mobility.SetMobilityModel( "ns3::GaussMarkovMobilityModel",
                   "Bounds", BoxValue( Box( -150000000, 150000000, -150000000, 150000000, -150000000, 150000000 ) ),
-                  "TimeStep", TimeValue( Seconds( 1 ) ));
+                  "TimeStep", TimeValue( Seconds( 5 ) ));
                      for ( uint32_t initialnumber = 0; initialnumber < 15; initialnumber++ )
-   {
+    {
        Ptr<GaussMarkovMobilityModel> mob = Satellite.Get( initialnumber )->GetObject<GaussMarkovMobilityModel>();
        mob->Setnodenumber( 15 );
-   }
+    }
 
     mobility.Install(Satellite);
     OlsrHelper      olsr;
@@ -80,32 +83,32 @@ main( int argc, char *argv[] )
     address.SetBase( "195.1.1.0", "255.255.255.0" );
     Ipv4InterfaceContainer Satip;
     Satip = address.Assign(Satellitedevice);
-    
-    OnOffHelper onOff1( "ns3::UdpSocketFactory", Address( InetSocketAddress( Satip.GetAddress( 0 ), 9 ) ) );
-    Config::SetDefault ("ns3::OnOffApplication::PacketSize", UintegerValue (210));
-    Config::SetDefault ("ns3::OnOffApplication::DataRate", StringValue ("448kb/s"));
+   
+   
+/*  OnOffHelper onOff1( "ns3::UdpSocketFactory", Address( InetSocketAddress( Satip.GetAddress( 7 ), 9 ) ) );
+    Config::SetDefault ("ns3::OnOffApplication::PacketSize", UintegerValue (1024));
+    Config::SetDefault ("ns3::OnOffApplication::DataRate", StringValue ("48kb/s"));
 
 
     onOff1.SetAttribute( "OnTime", StringValue( "ns3::ConstantRandomVariable[Constant=0.1]" ) );
     onOff1.SetAttribute( "OffTime", StringValue( "ns3::ConstantRandomVariable[Constant=0.9]" ) );
-    ApplicationContainer apps1 = onOff1.Install( Satellite.Get(7) );
+    ApplicationContainer apps1 = onOff1.Install( Satellite.Get(0) );
     apps1.Start( Seconds( 1.0 ) );
-    apps1.Stop( Seconds( 20.0 ) );
+    apps1.Stop( Seconds( 30.0 ) );
 
 
-    ApplicationContainer apps2=onOff1.Install(Satellite.Get(1));
-    apps2.Start( Seconds( 1.0 ) );
-    apps2.Stop( Seconds( 20.0 ) );
 
     PacketSinkHelper sink ("ns3::UdpSocketFactory",
-    Address( InetSocketAddress( Satip.GetAddress( 0 ), 9)));
+    Address( InetSocketAddress( Satip.GetAddress( 7 ), 9)));
     ApplicationContainer apps= sink.Install (Satellite);
     apps.Start (Seconds (0));
-    apps.Stop (Seconds (25.0));
+    apps.Stop (Seconds (50.0));
+    spectrumPhy.EnablePcapAll("try");*/    
+    
 
-    AnimationInterface anim( "first.xml" );
-    spectrumPhy.EnablePcapAll("try");
-
+    AnimationInterface anim( "/mnt/hgfs/share/first.xml" );
+    //spectrumPhy.EnablePcapAll("try");
+    //spectrumPhy.EnableAsciiAll("asciitr.tr");
     Ipv4GlobalRoutingHelper g;
     Ptr<OutputStreamWrapper> routingStream = Create<OutputStreamWrapper> ("multisat@10.routes", std::ios::out);
     g.PrintRoutingTableAllAt (Seconds (10), routingStream);
@@ -116,9 +119,20 @@ main( int argc, char *argv[] )
     Ptr<OutputStreamWrapper> routingStream_2 = Create<OutputStreamWrapper> ("multisat@3.routes", std::ios::out);
     l.PrintRoutingTableAllAt (Seconds (3), routingStream_2);
     Ipv4GlobalRoutingHelper k;
-    Ptr<OutputStreamWrapper> routingStream_4 = Create<OutputStreamWrapper> ("multisat@15.routes", std::ios::out);
+    Ptr<OutputStreamWrapper> routingStream_4 = Create<OutputStreamWrapper> ("/mnt/hgfs/share/multisat@15.routes", std::ios::out);
     k.PrintRoutingTableAllAt (Seconds (15), routingStream_4);
-    Simulator::Stop( Seconds( 25.0 ) );
+    routingStream_4 = Create<OutputStreamWrapper> ("multisat@11.routes", std::ios::out);
+    k.PrintRoutingTableAllAt (Seconds (11), routingStream_4);
+        routingStream_4 = Create<OutputStreamWrapper> ("multisat@13.routes", std::ios::out);
+    k.PrintRoutingTableAllAt (Seconds (13), routingStream_4);
+    routingStream_4 = Create<OutputStreamWrapper> ("multisat@16.routes", std::ios::out);
+    k.PrintRoutingTableAllAt (Seconds (16), routingStream_4);
+    routingStream_4 = Create<OutputStreamWrapper> ("multisat@17.routes", std::ios::out);
+    k.PrintRoutingTableAllAt (Seconds (17), routingStream_4);
+    routingStream_4 = Create<OutputStreamWrapper> ("multisat@20.routes", std::ios::out);
+    k.PrintRoutingTableAllAt (Seconds (20), routingStream_4);
+    // spectrumPhy.EnablePcapAll("\\data\\tryforbackup");
+    Simulator::Stop( Seconds( 30.0 ) );
     Simulator::Run();
     Simulator::Destroy();
     return(0);

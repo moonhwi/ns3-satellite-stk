@@ -17,36 +17,22 @@ using namespace ns3;
 int
 main( int argc, char *argv[] )
 {
-/*
- * uint32_t nAdHoc = 10;
- * CommandLine cmd;
- * cmd.AddValue( "nAdHoc", "Number of wifi ad devices", nAdHoc );
- * cmd.Parse( argc, argv );*/
-    NodeContainer AdHocNode;
-    AdHocNode.Create( 15 );
-    
-    LogComponentEnable("RandomWalk2d", LOG_LEVEL_ALL);
+
+    //GlobalValue::Bind ("SimulatorImplementationType", StringValue ("ns3::RealtimeSimulatorImpl"));
+    NodeContainer Satellite;
+    Satellite.Create(15);
+    LogComponentEnable("PropagationLossModel", LOG_LEVEL_DEBUG);
+    //LogComponentEnable("OlsrRoutingProtocol", LOG_LEVEL_ALL);
     SpectrumWifiPhyHelper spectrumPhy = SpectrumWifiPhyHelper::Default();
     Config::SetDefault( "ns3::WifiPhy::CcaMode1Threshold", DoubleValue( -62.0 ) );
-    std::cout<<"djdjd";
-    Ptr<MultiModelSpectrumChannel> spectrumChannel
-        = CreateObject<MultiModelSpectrumChannel> ();
-    Ptr<FriisPropagationLossModel> lossModel
-        = CreateObject<FriisPropagationLossModel> ();
-       /* std::vector<int> ilist = {1,1,3,4,5,6,7};
-        std::vector<std::vector<int> > q;
-        q.push_back(ilist);
-        ilist = {0,2,2,3,4,5,6,7};
-        q.push_back(ilist);
-        ilist = {1,1,2,3,4,5,6,7};
-        q.push_back(ilist);
-        q.push_back(ilist);
-    lossModel->SetAssNode(q);*/
-    std::cout<<"djdjd";
+    Ptr<MultiModelSpectrumChannel> spectrumChannel = CreateObject<MultiModelSpectrumChannel> ();
+    Ptr<FriisPropagationLossModel> lossModel = CreateObject<FriisPropagationLossModel> ();
+    //std::vector<int> ilist = {2,14};
+    std::vector<std::vector<int> > q={{1,14},{0,3},{0,3},{2,5},{3,6},{3,6},{5,8},{6,9},{6,9},{8,11},{9,12},{9,12},{11,14},{12,0},{12,0}};  
+    lossModel->SetAssNode(q);
     lossModel->SetFrequency( 10.180e9 );
     spectrumChannel->AddPropagationLossModel( lossModel );
-    Ptr<ConstantSpeedPropagationDelayModel> delayModel
-        = CreateObject<ConstantSpeedPropagationDelayModel> ();
+    Ptr<ConstantSpeedPropagationDelayModel> delayModel = CreateObject<ConstantSpeedPropagationDelayModel> ();
     spectrumChannel->SetPropagationDelayModel( delayModel );
     spectrumPhy.SetChannel( spectrumChannel );
     spectrumPhy.SetErrorRateModel( "ns3::NistErrorRateModel" );
@@ -59,19 +45,28 @@ main( int argc, char *argv[] )
     wifi.SetStandard( WIFI_PHY_STANDARD_80211a );
     wifi.SetRemoteStationManager( "ns3::ConstantRateWifiManager", "DataMode", StringValue( "OfdmRate6Mbps" ) );
     NqosWifiMacHelper mac = NqosWifiMacHelper::Default();
-    mac.SetType( "ns3::AdhocWifiMac",
-             "Slot", StringValue( "16us" ) );
-    NetDeviceContainer AdHocDevices;
-    AdHocDevices = wifi.Install( spectrumPhy, mac, AdHocNode );
+    //mac.SetType( "ns3::AdhocWifiMac",
+             //"Slot", StringValue( "16us" ) );
+    NetDeviceContainer Satellitedevice;
+    Satellitedevice = wifi.Install( spectrumPhy, mac, Satellite );
 
- 
     MobilityHelper mobility;
-
-    std::cout<<"djdjd";
+    Ptr<ListPositionAllocator> positionAlloc = CreateObject<ListPositionAllocator> ();
+    positionAlloc->Add (Vector (0, 0, 10));
+    positionAlloc->Add (Vector (10, 0, 10));
+    positionAlloc->Add (Vector (15, 4, 10));
+    positionAlloc->Add (Vector (1, 1, 10));
+    mobility.SetPositionAllocator (positionAlloc);
   mobility.SetMobilityModel( "ns3::GaussMarkovMobilityModel",
                   "Bounds", BoxValue( Box( -150000000, 150000000, -150000000, 150000000, -150000000, 150000000 ) ),
-                  "TimeStep", TimeValue( Seconds( 5 ) ));
-    mobility.Install(AdHocNode);
+                  "TimeStep", TimeValue( Seconds( 1 ) ));
+                     for ( uint32_t initialnumber = 0; initialnumber < 15; initialnumber++ )
+   {
+       Ptr<GaussMarkovMobilityModel> mob = Satellite.Get( initialnumber )->GetObject<GaussMarkovMobilityModel>();
+       mob->Setnodenumber( 15 );
+   }
+
+    mobility.Install(Satellite);
     OlsrHelper      olsr;
     Ipv4StaticRoutingHelper staticRouting;
     Ipv4ListRoutingHelper   list;
@@ -80,36 +75,36 @@ main( int argc, char *argv[] )
     InternetStackHelper internet;
     internet.SetRoutingHelper( list );
     /* has effect on the next Install () */
-    internet.Install( AdHocNode );
+    internet.Install( Satellite );
     Ipv4AddressHelper address;
     address.SetBase( "195.1.1.0", "255.255.255.0" );
-    Ipv4InterfaceContainer AdHocIp;
-    AdHocIp = address.Assign( AdHocDevices );
-    //NS_LOG_INFO( "Create Applications." );
-    //uint16_t port = 99;
-    OnOffHelper onOff1( "ns3::UdpSocketFactory", Address( InetSocketAddress( AdHocIp.GetAddress( 0 ), 9 ) ) );
+    Ipv4InterfaceContainer Satip;
+    Satip = address.Assign(Satellitedevice);
+    
+    OnOffHelper onOff1( "ns3::UdpSocketFactory", Address( InetSocketAddress( Satip.GetAddress( 0 ), 9 ) ) );
     Config::SetDefault ("ns3::OnOffApplication::PacketSize", UintegerValue (210));
     Config::SetDefault ("ns3::OnOffApplication::DataRate", StringValue ("448kb/s"));
 
 
     onOff1.SetAttribute( "OnTime", StringValue( "ns3::ConstantRandomVariable[Constant=0.1]" ) );
     onOff1.SetAttribute( "OffTime", StringValue( "ns3::ConstantRandomVariable[Constant=0.9]" ) );
-    ApplicationContainer apps1 = onOff1.Install( AdHocNode.Get(2) );
+    ApplicationContainer apps1 = onOff1.Install( Satellite.Get(7) );
     apps1.Start( Seconds( 1.0 ) );
     apps1.Stop( Seconds( 20.0 ) );
 
 
-    ApplicationContainer apps2=onOff1.Install(AdHocNode.Get(1));
+    ApplicationContainer apps2=onOff1.Install(Satellite.Get(1));
     apps2.Start( Seconds( 1.0 ) );
     apps2.Stop( Seconds( 20.0 ) );
 
     PacketSinkHelper sink ("ns3::UdpSocketFactory",
-    Address( InetSocketAddress( AdHocIp.GetAddress( 0 ), 9)));
-    ApplicationContainer apps= sink.Install (AdHocNode);
-    apps.Start (Seconds (1.1));
-    apps.Stop (Seconds (20.0));
+    Address( InetSocketAddress( Satip.GetAddress( 0 ), 9)));
+    ApplicationContainer apps= sink.Install (Satellite);
+    apps.Start (Seconds (0));
+    apps.Stop (Seconds (25.0));
 
     AnimationInterface anim( "first.xml" );
+    spectrumPhy.EnablePcapAll("try");
     Simulator::Stop( Seconds( 25.0 ) );
     Simulator::Run();
     Simulator::Destroy();
