@@ -32,6 +32,7 @@
 #include "ns3/double.h"
 #include "ns3/string.h"
 #include "ns3/pointer.h"
+#include "ns3/simulator.h"
 #include <cmath>
 std::vector<std::vector<int> > AssNode;
 namespace ns3 {
@@ -310,20 +311,20 @@ namespace ns3 {
 		NS_LOG_DEBUG( "distance=" << distance << "m, loss=" << lossDb << "dB" );
 		return(txPowerDbm - std::max( lossDb, m_minLoss ) ); */
 		
-		
-		for (unsigned int  i = 0; i < AssNode.size(); i++)
+		/* for (unsigned int  i = 0; i < AssNode.size(); i++)
 		{
 			for (unsigned int q = 0; q < AssNode[i].size(); q++)
 			{
 				std::cout<<AssNode[i][q]<< " ";
 			}
 			
-		}
+		}*/
+		
 		
 		std::vector<int> a_father=AssNode[a->GetObject<Node>()->GetId()];
-		std::cout<<"a's father:"<<a_father[0]<<" "<<a_father[1]<<std::endl;
+		//std::cout<<"a's father:"<<a_father[0]<<" "<<a_father[1]<<std::endl;
 		std::vector<int> b_father=AssNode[b->GetObject<Node>()->GetId()];
-		std::cout<<"b's father:"<<b_father[0]<<" "<<b_father[1]<<std::endl;
+		//std::cout<<"b's father:"<<b_father[0]<<" "<<b_father[1]<<std::endl;
 		//a1-----------a--------------a2
 		Ptr<Node>		nodea1	= NodeList::GetNode(a_father[0]);
 		Ptr<Object>		objecta1	= nodea1;
@@ -351,7 +352,7 @@ namespace ns3 {
 				double	numerator	= m_lambda * m_lambda;
 				double	denominator	= 16 * M_PI * M_PI * distance * distance * m_systemLoss;
 				double	lossDb		= -10 * log10( numerator / denominator );
-				NS_LOG_DEBUG( "distance=" << distance << "m, loss=" << lossDb << "dB" );
+				NS_LOG_DEBUG( a->GetObject<Node>()->GetId()<<" "<<b->GetObject<Node>()->GetId()<<" "<<Simulator::Now ().GetSeconds () );
 				return(txPowerDbm - std::max( lossDb, m_minLoss ) );
 			}
 			else if((distance*distance+Distanceb_4*Distanceb_4-Distancea_4*Distancea_4)>(2*0.9848*distance*Distanceb_4))
@@ -359,7 +360,7 @@ namespace ns3 {
 				double	numerator	= m_lambda * m_lambda;
 				double	denominator	= 16 * M_PI * M_PI * distance * distance * m_systemLoss;
 				double	lossDb		= -10 * log10( numerator / denominator );
-				NS_LOG_DEBUG( "distance=" << distance << "m, loss=" << lossDb << "dB" );
+				NS_LOG_DEBUG( a->GetObject<Node>()->GetId()<<" "<<b->GetObject<Node>()->GetId()<<" "<<Simulator::Now ().GetSeconds () );
 				return(txPowerDbm - std::max( lossDb, m_minLoss ) );
 			}
 			else 
@@ -372,7 +373,7 @@ namespace ns3 {
 				double	numerator	= m_lambda * m_lambda;
 				double	denominator	= 16 * M_PI * M_PI * distance * distance * m_systemLoss;
 				double	lossDb		= -10 * log10( numerator / denominator );
-				NS_LOG_DEBUG( "distance=" << distance << "m, loss=" << lossDb << "dB" );
+				NS_LOG_DEBUG( a->GetObject<Node>()->GetId()<<" "<<b->GetObject<Node>()->GetId()<<" "<<Simulator::Now ().GetSeconds ());
 				return(txPowerDbm - std::max( lossDb, m_minLoss ) );
 			}
 			else if((distance*distance+Distanceb_4*Distanceb_4-Distancea_4*Distancea_4)>(2*0.9848*distance*Distanceb_4))
@@ -380,7 +381,7 @@ namespace ns3 {
 				double	numerator	= m_lambda * m_lambda;
 				double	denominator	= 16 * M_PI * M_PI * distance * distance * m_systemLoss;
 				double	lossDb		= -10 * log10( numerator / denominator );
-				NS_LOG_DEBUG( "distance=" << distance << "m, loss=" << lossDb << "dB" );
+				NS_LOG_DEBUG(a->GetObject<Node>()->GetId()<<" "<<b->GetObject<Node>()->GetId()<<" "<<Simulator::Now ().GetSeconds ());
 				return(txPowerDbm - std::max( lossDb, m_minLoss ) );
 			}
 			else 
