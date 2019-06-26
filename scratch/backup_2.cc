@@ -1,4 +1,5 @@
-//本次备份是为了测试双网卡情况下的路由包发送过程中
+//本次备份是为了测试双网卡情况下的路由包发送过程中路由构建的速度
+//测试已经成功
 #include "ns3/core-module.h"
 #include "ns3/network-module.h"
 #include "ns3/applications-module.h"
@@ -173,30 +174,30 @@ main( int argc, char *argv[] )
     
     
 
-    AnimationInterface anim( "first_doubledevices.xml" );
-    spectrumPhy.EnablePcapAll("try_doublenetdevices");
+    AnimationInterface anim( "/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/doubledevices.xml" );
+    spectrumPhy.EnablePcapAll("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/try_doublenetdevices");
     
     Ipv4GlobalRoutingHelper g;
-    Ptr<OutputStreamWrapper> routingStream = Create<OutputStreamWrapper> ("multisat@10.routes", std::ios::out);
+    Ptr<OutputStreamWrapper> routingStream = Create<OutputStreamWrapper> ("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/multisat@10.routes", std::ios::out);
     g.PrintRoutingTableAllAt (Seconds (10), routingStream);
     Ipv4GlobalRoutingHelper h;
-    Ptr<OutputStreamWrapper> routingStream_1 = Create<OutputStreamWrapper> ("multisat@5.routes", std::ios::out);
+    Ptr<OutputStreamWrapper> routingStream_1 = Create<OutputStreamWrapper> ("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/multisat@5.routes", std::ios::out);
     h.PrintRoutingTableAllAt (Seconds (5), routingStream_1);
     Ipv4GlobalRoutingHelper l;
-    Ptr<OutputStreamWrapper> routingStream_2 = Create<OutputStreamWrapper> ("multisat@3.routes", std::ios::out);
+    Ptr<OutputStreamWrapper> routingStream_2 = Create<OutputStreamWrapper> ("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/multisat@3.routes", std::ios::out);
     l.PrintRoutingTableAllAt (Seconds (3), routingStream_2);
     Ipv4GlobalRoutingHelper k;
-    Ptr<OutputStreamWrapper> routingStream_4 = Create<OutputStreamWrapper> ("multisat@15.routes", std::ios::out);
+    Ptr<OutputStreamWrapper> routingStream_4 = Create<OutputStreamWrapper> ("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/multisat@15.routes", std::ios::out);
     k.PrintRoutingTableAllAt (Seconds (15), routingStream_4);
-    routingStream_4 = Create<OutputStreamWrapper> ("multisat@11.routes", std::ios::out);
+    routingStream_4 = Create<OutputStreamWrapper> ("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/multisat@11.routes", std::ios::out);
     k.PrintRoutingTableAllAt (Seconds (11), routingStream_4);
-        routingStream_4 = Create<OutputStreamWrapper> ("multisat@13.routes", std::ios::out);
+        routingStream_4 = Create<OutputStreamWrapper> ("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/multisat@13.routes", std::ios::out);
     k.PrintRoutingTableAllAt (Seconds (13), routingStream_4);
-    routingStream_4 = Create<OutputStreamWrapper> ("multisat@16.routes", std::ios::out);
+    routingStream_4 = Create<OutputStreamWrapper> ("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/multisat@16.routes", std::ios::out);
     k.PrintRoutingTableAllAt (Seconds (16), routingStream_4);
-    routingStream_4 = Create<OutputStreamWrapper> ("multisat@17.routes", std::ios::out);
+    routingStream_4 = Create<OutputStreamWrapper> ("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/multisat@17.routes", std::ios::out);
     k.PrintRoutingTableAllAt (Seconds (17), routingStream_4);
-    routingStream_4 = Create<OutputStreamWrapper> ("multisat@20.routes", std::ios::out);
+    routingStream_4 = Create<OutputStreamWrapper> ("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/multisat@20.routes", std::ios::out);
     k.PrintRoutingTableAllAt (Seconds (20), routingStream_4);
     // spectrumPhy.EnablePcapAll("\\data\\tryforbackup");
     Simulator::Stop( Seconds( 50.0 ) );
