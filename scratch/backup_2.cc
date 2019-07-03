@@ -13,19 +13,36 @@
 #include "ns3/spectrum-module.h"
 #include "ns3/stats-module.h"
 #include "ns3/pcap-file-wrapper.h"
- #include "ns3/flow-monitor-helper.h"
- #include "ns3/netanim-module.h"
+#include "ns3/flow-monitor-helper.h"
+#include "ns3/netanim-module.h"
 using namespace ns3;
 int
 main( int argc, char *argv[] )
 {
 
+    int AccessMatrix[15][15]={0};
+    for (int i = 0; i < 15; i++)
+    {
+       for (int j = 0; j < 15; j++)
+       {
+          AccessMatrix[i][j]=1;
+       }
+    }
+    for (int i = 0; i < 15; i++)
+    {
+       for (int j = 0; j < 15; j++)
+       {
+          std::cout<<AccessMatrix[i][j]<<" ";
+       }
+       std::cout<<std::endl;
+    }
+    
     //GlobalValue::Bind ("SimulatorImplementationType", StringValue ("ns3::RealtimeSimulatorImpl"));
     NodeContainer Satellite;
     Satellite.Create(15);
     //LogComponentEnable("Ipv4L3Protocol", LOG_LEVEL_LOGIC);
-    //LogComponentEnable("PropagationLossModel", LOG_LEVEL_DEBUG);
-    //LogComponentEnable("OlsrRoutingProtocol", LOG_LEVEL_ALL);
+    LogComponentEnable("PropagationLossModel", LOG_LEVEL_DEBUG);
+    //LogComponentEnable("OlsrRoutingProtocol", LOG_LEVEL_DEBUG);
     SpectrumWifiPhyHelper spectrumPhy = SpectrumWifiPhyHelper::Default();
     SpectrumWifiPhyHelper spectrumPhy_2 = SpectrumWifiPhyHelper::Default();
     Config::SetDefault( "ns3::WifiPhy::CcaMode1Threshold", DoubleValue( -62.0 ) );
@@ -34,13 +51,13 @@ main( int argc, char *argv[] )
     Ptr<FriisPropagationLossModel> lossModel = CreateObject<FriisPropagationLossModel> ();
     Ptr<FriisPropagationLossModel> lossModel_2 = CreateObject<FriisPropagationLossModel> ();
     //std::vector<int> ilist = {2,14};
-    std::vector<std::vector<int> > q={{1,14},{0,3},{0,3},{2,5},{3,6},{3,6},{5,8},{6,9},{6,9},{8,11},{9,12},{9,12},{11,14},{12,0},{12,0}};  
+    std::vector<std::vector<int> > q={{1,14},{0,3},{0,3},{5,2},{3,6},{3,6},{8,5},{6,9},{6,9},{11,8},{9,12},{9,12},{14,11},{12,0},{12,0}};  
     lossModel->SetAssNode(q);
     lossModel_2->SetAssNode(q);
     lossModel->SetFrequency( 10.180e9 );
     lossModel_2->SetFrequency( 5.180e9 );
     spectrumChannel->AddPropagationLossModel( lossModel );
-    spectrumChannel_2->AddPropagationLossModel( lossModel );
+    spectrumChannel_2->AddPropagationLossModel( lossModel_2 );
     Ptr<ConstantSpeedPropagationDelayModel> delayModel = CreateObject<ConstantSpeedPropagationDelayModel> ();
     spectrumChannel->SetPropagationDelayModel( delayModel );
     spectrumChannel_2->SetPropagationDelayModel( delayModel );
@@ -55,7 +72,7 @@ main( int argc, char *argv[] )
     spectrumPhy_2.SetErrorRateModel( "ns3::NistErrorRateModel" );
     spectrumPhy_2.Set( "Frequency", UintegerValue( 5180 ) );
     spectrumPhy_2.Set( "TxPowerStart", DoubleValue( 5 ) );
-    spectrumPhy_2.Set( "TxGain", DoubleValue( 45 ) );
+    spectrumPhy_2.Set( "TxGain", DoubleValue( 45) );
     spectrumPhy_2.Set( "RxGain", DoubleValue( 45 ) );
     spectrumPhy_2.Set( "TxPowerEnd", DoubleValue( 5 ) );
     WifiHelper wifi;
@@ -191,7 +208,7 @@ main( int argc, char *argv[] )
     k.PrintRoutingTableAllAt (Seconds (15), routingStream_4);
     routingStream_4 = Create<OutputStreamWrapper> ("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/multisat@11.routes", std::ios::out);
     k.PrintRoutingTableAllAt (Seconds (11), routingStream_4);
-        routingStream_4 = Create<OutputStreamWrapper> ("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/multisat@13.routes", std::ios::out);
+    routingStream_4 = Create<OutputStreamWrapper> ("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/multisat@13.routes", std::ios::out);
     k.PrintRoutingTableAllAt (Seconds (13), routingStream_4);
     routingStream_4 = Create<OutputStreamWrapper> ("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/multisat@16.routes", std::ios::out);
     k.PrintRoutingTableAllAt (Seconds (16), routingStream_4);

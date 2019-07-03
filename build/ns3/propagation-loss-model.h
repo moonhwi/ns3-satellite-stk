@@ -303,6 +303,7 @@ public:
    */
   double GetSystemLoss (void) const;
   void SetAssNode (std::vector<std::vector<int> > m);
+  void SetAccess(int a[15][15]);
 
 
 private:
@@ -331,6 +332,7 @@ private:
    * \return the Watts
    */
   double DbmToW (double dbm) const;
+  
 
   /**
    * Transforms a Watt value to Dbm
@@ -338,7 +340,7 @@ private:
    * \return the Dbm
    */
   double DbmFromW (double w) const;
-
+  
   double m_lambda;        //!< the carrier wavelength
   double m_frequency;     //!< the carrier frequency
   double m_systemLoss;    //!< the system loss
@@ -444,7 +446,7 @@ private:
                                 Ptr<MobilityModel> a,
                                 Ptr<MobilityModel> b) const;
   virtual int64_t DoAssignStreams (int64_t stream);
-
+  
   /**
    * Transforms a Dbm value to Watt
    * \param dbm the Dbm value
@@ -458,7 +460,7 @@ private:
    * \return the Dbm
    */
   double DbmFromW (double w) const;
-
+  std::vector<std::vector<int> > AssNode_tworay;
   double m_lambda;        //!< the carrier wavelength
   double m_frequency;     //!< the carrier frequency
   double m_systemLoss;    //!< the system loss

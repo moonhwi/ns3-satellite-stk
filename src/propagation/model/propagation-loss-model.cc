@@ -35,6 +35,7 @@
 #include "ns3/simulator.h"
 #include <cmath>
 std::vector<std::vector<int> > AssNode;
+int AccessMatrix[15][15];
 namespace ns3 {
 	NS_LOG_COMPONENT_DEFINE( "PropagationLossModel" );
 
@@ -257,7 +258,18 @@ namespace ns3 {
 		double dbm = std::log10( w * 1000.0 ) * 10.0;
 		return(dbm);
 	}
-
+	void 
+	FriisPropagationLossModel::SetAccess(int a[15][15])
+	{
+		for(int i=0;i<10;i++)
+		{
+			for(int j=0;j<10;j++)
+			{
+				AccessMatrix[i][j]=a[i][j];
+			}
+			
+		}
+	}
 
 	double
 	FriisPropagationLossModel::DoCalcRxPower( double txPowerDbm,
@@ -293,106 +305,89 @@ namespace ns3 {
 		 * L: system loss (unit-less)
 		 * lambda: wavelength (m)
 		 */
-
+		double distance = a->GetDistanceFrom( b );
+		std::vector<int > a_father=AssNode[a->GetObject<Node>()->GetId()];
+		std::vector<int > b_father=AssNode[b->GetObject<Node>()->GetId()];
+		Ptr<Node>	nodea1	= NodeList::GetNode(a_father[0]);
+		Ptr<Object>	objecta1= nodea1;
+		Ptr<Node>	nodea2	= NodeList::GetNode(a_father[1]);
+		Ptr<Object>	objecta2= nodea2;
+		Ptr<Node>	nodeb1	= NodeList::GetNode(b_father[0]);
+		Ptr<Object>	objectb1= nodeb1;
+		Ptr<Node>	nodeb2	= NodeList::GetNode(b_father[1]);
+		Ptr<Object>	objectb2= nodeb2;
 		
-		 double distance = a->GetDistanceFrom( b );
-		/* 
-		if ( distance < 3 * m_lambda )
+		if (m_frequency==1.018e+10)//0--->10G 1--->5G
 		{
-			NS_LOG_WARN( "distance not within the far field region => inaccurate propagation loss value" );
+			double Distanceb_a1=b->GetDistanceFrom(objecta1->GetObject<MobilityModel>());
+			double Distancea_a1=a->GetDistanceFrom(objecta1->GetObject<MobilityModel>());
+			double Distancea_b1=a->GetDistanceFrom(objectb1->GetObject<MobilityModel>());
+			double Distanceb_b1=b->GetDistanceFrom(objectb1->GetObject<MobilityModel>());
+			double Distanceb_b2=b->GetDistanceFrom(objectb2->GetObject<MobilityModel>());
+			double Distancea_b2=a->GetDistanceFrom(objectb2->GetObject<MobilityModel>());
+			if ((distance*distance+Distancea_a1*Distancea_a1-Distanceb_a1*Distanceb_a1)>(2*0.9848*distance*Distancea_a1))
+			{
+				if ((distance*distance+Distanceb_b1*Distanceb_b1-Distancea_b1*Distancea_b1)>(2*0.9848*distance*Distanceb_b1))
+				{
+					double	numerator	= m_lambda * m_lambda;
+					double	denominator	= 16 * M_PI * M_PI * distance * distance * m_systemLoss;
+					double	lossDb		= -10 * log10( numerator / denominator );
+					NS_LOG_DEBUG( a->GetObject<Node>()->GetId()<<" "<<b->GetObject<Node>()->GetId()<<" "<<Simulator::Now().GetSeconds());
+					return(txPowerDbm - std::max( lossDb, m_minLoss ) );
+				}
+				else if ((distance*distance+Distanceb_b2*Distanceb_b2-Distancea_b2*Distancea_b2)>(2*0.9848*distance*Distanceb_b2))
+				{
+					double	numerator	= m_lambda * m_lambda;
+					double	denominator	= 16 * M_PI * M_PI * distance * distance * m_systemLoss;
+					double	lossDb		= -10 * log10( numerator / denominator );
+					NS_LOG_DEBUG( a->GetObject<Node>()->GetId()<<" "<<b->GetObject<Node>()->GetId()<<" "<<Simulator::Now().GetSeconds() );
+					return(txPowerDbm - std::max( lossDb, m_minLoss ) );
+				}
+				else
+					return(-1000);	
+			}	
+			else
+				return(-1000);	
 		}
-		if ( distance <= 0 )
+		else if (m_frequency==5.18e+09)
 		{
-			return(txPowerDbm - m_minLoss);
-		}
-		double	numerator	= m_lambda * m_lambda;
-		double	denominator	= 16 * M_PI * M_PI * distance * distance * m_systemLoss;
-		double	lossDb		= -10 * log10( numerator / denominator );
-		NS_LOG_DEBUG( "distance=" << distance << "m, loss=" << lossDb << "dB" );
-		return(txPowerDbm - std::max( lossDb, m_minLoss ) ); */
-		
-		/* for (unsigned int  i = 0; i < AssNode.size(); i++)
-		{
-			for (unsigned int q = 0; q < AssNode[i].size(); q++)
+			double Distanceb_a2=b->GetDistanceFrom(objecta2->GetObject<MobilityModel>());
+			double Distancea_a2=a->GetDistanceFrom(objecta2->GetObject<MobilityModel>());
+			double Distancea_b1=a->GetDistanceFrom(objectb1->GetObject<MobilityModel>());
+			double Distanceb_b1=b->GetDistanceFrom(objectb1->GetObject<MobilityModel>());
+			double Distanceb_b2=b->GetDistanceFrom(objectb2->GetObject<MobilityModel>());
+			double Distancea_b2=a->GetDistanceFrom(objectb2->GetObject<MobilityModel>());
+			if ((distance*distance+Distancea_a2*Distancea_a2-Distanceb_a2*Distanceb_a2)>(2*0.9848*distance*Distancea_a2))
 			{
-				std::cout<<AssNode[i][q]<< " ";
+				if ((distance*distance+Distanceb_b1*Distanceb_b1-Distancea_b1*Distancea_b1)>(2*0.9848*distance*Distanceb_b1))
+				{
+					double	numerator	= m_lambda * m_lambda;
+					double	denominator	= 16 * M_PI * M_PI * distance * distance * m_systemLoss;
+					double	lossDb		= -10 * log10( numerator / denominator );
+					NS_LOG_DEBUG( a->GetObject<Node>()->GetId()<<" "<<b->GetObject<Node>()->GetId()<<" "<<Simulator::Now().GetSeconds() );
+					return(txPowerDbm - std::max( lossDb, m_minLoss ) );
+				}
+				else if ((distance*distance+Distanceb_b2*Distanceb_b2-Distancea_b2*Distancea_b2)>(2*0.9848*distance*Distanceb_b2))
+				{
+					double	numerator	= m_lambda * m_lambda;
+					double	denominator	= 16 * M_PI * M_PI * distance * distance * m_systemLoss;
+					double	lossDb		= -10 * log10( numerator / denominator );
+					NS_LOG_DEBUG( a->GetObject<Node>()->GetId()<<" "<<b->GetObject<Node>()->GetId()<<" "<<Simulator::Now().GetSeconds() );
+					return(txPowerDbm - std::max( lossDb, m_minLoss ) );
+				}
+				else
+					return(-1000);
 			}
-			
-		}*/
-		
-		
-		std::vector<int> a_father=AssNode[a->GetObject<Node>()->GetId()];
-		//std::cout<<"a's father:"<<a_father[0]<<" "<<a_father[1]<<std::endl;
-		std::vector<int> b_father=AssNode[b->GetObject<Node>()->GetId()];
-		//std::cout<<"b's father:"<<b_father[0]<<" "<<b_father[1]<<std::endl;
-		//a1-----------a--------------a2
-		Ptr<Node>		nodea1	= NodeList::GetNode(a_father[0]);
-		Ptr<Object>		objecta1	= nodea1;
-		double Distancea_1=a->GetDistanceFrom(objecta1->GetObject<MobilityModel>());
-		Ptr<Node>		nodea2	= NodeList::GetNode(a_father[1]);
-		Ptr<Object>		objecta2	= nodea2;
-		double Distancea_2=a->GetDistanceFrom(objecta2->GetObject<MobilityModel>());
-		//b1----------b---------------b2
-		Ptr<Node>		nodeb1	= NodeList::GetNode(b_father[0]);
-		Ptr<Object>		objectb1	= nodeb1;
-		double Distanceb_3=b->GetDistanceFrom(objectb1->GetObject<MobilityModel>());
-		Ptr<Node>		nodeb2	= NodeList::GetNode(b_father[1]);
-		Ptr<Object>		objectb2	= nodeb2;
-		double Distanceb_4=b->GetDistanceFrom(objectb2->GetObject<MobilityModel>());
-
-		double Distanceb_1=b->GetDistanceFrom(objecta1->GetObject<MobilityModel>());
-		double Distanceb_2=b->GetDistanceFrom(objecta2->GetObject<MobilityModel>());
-		double Distancea_3=a->GetDistanceFrom(objectb1->GetObject<MobilityModel>());
-		double Distancea_4=a->GetDistanceFrom(objectb2->GetObject<MobilityModel>());
-		if ((distance*distance+Distancea_1*Distancea_1-Distanceb_1*Distanceb_1)>(2*0.9848*distance*Distancea_1))//theta=10
-		{
-			//对a和b的相对位置进行判断
-			if((distance*distance+Distanceb_3*Distanceb_3-Distancea_3*Distancea_3)>(2*0.9848*distance*Distanceb_3))
+			else
 			{
-				double	numerator	= m_lambda * m_lambda;
-				double	denominator	= 16 * M_PI * M_PI * distance * distance * m_systemLoss;
-				double	lossDb		= -10 * log10( numerator / denominator );
-				NS_LOG_DEBUG( a->GetObject<Node>()->GetId()<<" "<<b->GetObject<Node>()->GetId()<<" "<<Simulator::Now ().GetSeconds () );
-				return(txPowerDbm - std::max( lossDb, m_minLoss ) );
-			}
-			else if((distance*distance+Distanceb_4*Distanceb_4-Distancea_4*Distancea_4)>(2*0.9848*distance*Distanceb_4))
-			{
-				double	numerator	= m_lambda * m_lambda;
-				double	denominator	= 16 * M_PI * M_PI * distance * distance * m_systemLoss;
-				double	lossDb		= -10 * log10( numerator / denominator );
-				NS_LOG_DEBUG( a->GetObject<Node>()->GetId()<<" "<<b->GetObject<Node>()->GetId()<<" "<<Simulator::Now ().GetSeconds () );
-				return(txPowerDbm - std::max( lossDb, m_minLoss ) );
-			}
-			else 
 				return(-1000);
+			}
 		}
-		else if ((distance*distance+Distancea_2*Distancea_2-Distanceb_2*Distanceb_2)>(2*0.9848*distance*Distancea_2))//theta=10
+		else
 		{
-			if((distance*distance+Distanceb_3*Distanceb_3-Distancea_3*Distancea_3)>(2*0.9848*distance*Distanceb_3))
-			{
-				double	numerator	= m_lambda * m_lambda;
-				double	denominator	= 16 * M_PI * M_PI * distance * distance * m_systemLoss;
-				double	lossDb		= -10 * log10( numerator / denominator );
-				NS_LOG_DEBUG( a->GetObject<Node>()->GetId()<<" "<<b->GetObject<Node>()->GetId()<<" "<<Simulator::Now ().GetSeconds ());
-				return(txPowerDbm - std::max( lossDb, m_minLoss ) );
-			}
-			else if((distance*distance+Distanceb_4*Distanceb_4-Distancea_4*Distancea_4)>(2*0.9848*distance*Distanceb_4))
-			{
-				double	numerator	= m_lambda * m_lambda;
-				double	denominator	= 16 * M_PI * M_PI * distance * distance * m_systemLoss;
-				double	lossDb		= -10 * log10( numerator / denominator );
-				NS_LOG_DEBUG(a->GetObject<Node>()->GetId()<<" "<<b->GetObject<Node>()->GetId()<<" "<<Simulator::Now ().GetSeconds ());
-				return(txPowerDbm - std::max( lossDb, m_minLoss ) );
-			}
-			else 
-			 	return(-1000);
-		} 
-		else 
 			return(-1000);
-			
+		}
 	}
-
-
 	int64_t
 	FriisPropagationLossModel::DoAssignStreams( int64_t stream )
 	{
@@ -543,6 +538,7 @@ namespace ns3 {
 		 * rx = tx + 10 log10 (-----------------------)
 		 *                      (d * d * d * d) * L
 		 */
+		//std::cout<<m_frequency<<" ";
 		double distance = a->GetDistanceFrom( b );
 		if ( distance <= m_minDistance )
 		{
