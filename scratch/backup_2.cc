@@ -60,9 +60,9 @@ main( int argc, char *argv[] )
     WifiHelper wifi;
     WifiHelper wifi_2;
     wifi.SetStandard( WIFI_PHY_STANDARD_80211a );
-    wifi.SetRemoteStationManager( "ns3::ConstantRateWifiManager", "DataMode", StringValue( "OfdmRate6Mbps" ) );
+    //wifi.SetRemoteStationManager( "ns3::ConstantRateWifiManager", "DataMode", StringValue( "OfdmRate6Mbps" ) );
     wifi_2.SetStandard( WIFI_PHY_STANDARD_80211a );
-    wifi_2.SetRemoteStationManager( "ns3::ConstantRateWifiManager", "DataMode", StringValue( "OfdmRate6Mbps" ) );
+    //wifi_2.SetRemoteStationManager( "ns3::ConstantRateWifiManager", "DataMode", StringValue( "OfdmRate6Mbps" ) );
     NqosWifiMacHelper mac = NqosWifiMacHelper::Default();
     NetDeviceContainer Satellitedevice;
     Satellitedevice = wifi.Install( spectrumPhy, mac, Satellite );
@@ -100,6 +100,27 @@ main( int argc, char *argv[] )
     Satip = address.Assign(Satellitedevice);
     address.SetBase( "195.1.2.0", "255.255.255.0" );
     Ipv4InterfaceContainer Satip_1 = address.Assign(Satellitedevice_2);
+
+    OnOffHelper onOff1( "ns3::UdpSocketFactory", Address( InetSocketAddress( Satip.GetAddress( 7 ), 9 ) ) );
+    Config::SetDefault ("ns3::OnOffApplication::PacketSize", UintegerValue (2048));
+    Config::SetDefault ("ns3::OnOffApplication::DataRate", StringValue ("8kb/s"));
+
+
+    onOff1.SetAttribute( "OnTime", StringValue( "ns3::ConstantRandomVariable[Constant=0.1]" ) );
+    onOff1.SetAttribute( "OffTime", StringValue( "ns3::ConstantRandomVariable[Constant=0.9]" ) );
+    ApplicationContainer apps1 = onOff1.Install( Satellite.Get(0) );
+    apps1.Start( Seconds( 1.0 ) );
+    apps1.Stop( Seconds( 30.0 ) );
+
+
+
+    PacketSinkHelper sink ("ns3::UdpSocketFactory",
+    Address( InetSocketAddress( Ipv4Address::GetAny (), 9)));
+    ApplicationContainer apps= sink.Install (Satellite);
+    apps.Start (Seconds (0));
+    apps.Stop (Seconds (50.0));
+
+
     AnimationInterface anim( "/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/doubledevices.xml" );
     spectrumPhy.EnablePcapAll("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/try_doublenetdevices");
     
