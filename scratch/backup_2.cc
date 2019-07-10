@@ -23,7 +23,7 @@ main( int argc, char *argv[] )
     NodeContainer Satellite;
     Satellite.Create(15);
     //LogComponentEnable("Ipv4L3Protocol", LOG_LEVEL_LOGIC);
-    LogComponentEnable("PropagationLossModel", LOG_LEVEL_DEBUG);
+    //LogComponentEnable("PropagationLossModel", LOG_LEVEL_DEBUG);
     //LogComponentEnable("OlsrRoutingProtocol", LOG_LEVEL_DEBUG);
     SpectrumWifiPhyHelper spectrumPhy = SpectrumWifiPhyHelper::Default();
     SpectrumWifiPhyHelper spectrumPhy_2 = SpectrumWifiPhyHelper::Default();
@@ -47,7 +47,7 @@ main( int argc, char *argv[] )
     spectrumPhy.SetErrorRateModel( "ns3::NistErrorRateModel" );
     spectrumPhy.Set( "Frequency", UintegerValue( 10180 ) );
     spectrumPhy.Set( "TxPowerStart", DoubleValue( 5 ) );
-    spectrumPhy.Set( "TxGain", DoubleValue( 45 ) );
+    spectrumPhy.Set( "TxGain", DoubleValue( 50 ) );
     spectrumPhy.Set( "RxGain", DoubleValue( 45 ) );
     spectrumPhy.Set( "TxPowerEnd", DoubleValue( 5 ) );
     spectrumPhy_2.SetChannel( spectrumChannel_2 );
@@ -117,6 +117,8 @@ main( int argc, char *argv[] )
     k.PrintRoutingTableAllAt (Seconds (15), routingStream_4);
     routingStream_4 = Create<OutputStreamWrapper> ("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/multisat@11.routes", std::ios::out);
     k.PrintRoutingTableAllAt (Seconds (11), routingStream_4);
+    routingStream_4 = Create<OutputStreamWrapper> ("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/multisat@12.routes", std::ios::out);
+    k.PrintRoutingTableAllAt (Seconds (12), routingStream_4);
     routingStream_4 = Create<OutputStreamWrapper> ("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/multisat@13.routes", std::ios::out);
     k.PrintRoutingTableAllAt (Seconds (13), routingStream_4);
     routingStream_4 = Create<OutputStreamWrapper> ("/home/limemnghui/ns-allinone-3.27/ns-3.27/doublenetdevice/multisat@16.routes", std::ios::out);

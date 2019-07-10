@@ -44,5 +44,6 @@
         "typeinfo": "cpp",
         "utility": "cpp",
         "deque": "cpp"
-    }
+    },
+    "git.ignoreLimitWarning": true
 }

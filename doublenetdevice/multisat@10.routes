@@ -2,12 +2,14 @@ Node: 0, Time: +10.0s, Local time: +10.0s, Ipv4ListRouting table
   Priority: 10 Protocol: ns3::olsr::RoutingProtocol
 Node: 0, Time: +10.0s, Local time: +10.0s, OLSR Routing table
 Destination		NextHop		Interface	Distance
+195.1.1.2		195.1.1.2		1		1	
 195.1.1.3		195.1.1.3		1		1	
 195.1.1.13		195.1.2.15		2		2	
 195.1.1.14		195.1.2.14		2		1	
 195.1.1.15		195.1.2.15		2		1	
+195.1.2.2		195.1.1.2		1		1	
 195.1.2.3		195.1.1.3		1		1	
-195.1.2.4		195.1.1.3		1		2	
+195.1.2.4		195.1.1.2		1		2	
 195.1.2.13		195.1.2.15		2		2	
 195.1.2.14		195.1.2.14		2		1	
 195.1.2.15		195.1.2.15		2		1	
@@ -23,13 +25,18 @@ Node: 1, Time: +10.0s, Local time: +10.0s, Ipv4ListRouting table
   Priority: 10 Protocol: ns3::olsr::RoutingProtocol
 Node: 1, Time: +10.0s, Local time: +10.0s, OLSR Routing table
 Destination		NextHop		Interface	Distance
+195.1.1.1		195.1.1.1		1		1	
+195.1.1.3		195.1.1.1		1		2	
 195.1.1.4		195.1.2.4		2		1	
 195.1.1.5		195.1.2.4		2		2	
 195.1.1.6		195.1.2.4		2		2	
-195.1.2.3		195.1.2.4		2		2	
+195.1.2.1		195.1.1.1		1		1	
+195.1.2.3		195.1.1.1		1		2	
 195.1.2.4		195.1.2.4		2		1	
 195.1.2.5		195.1.2.4		2		2	
 195.1.2.6		195.1.2.4		2		2	
+195.1.2.14		195.1.1.1		1		2	
+195.1.2.15		195.1.1.1		1		2	
  HNA Routing Table: empty
   Priority: 0 Protocol: ns3::Ipv4StaticRouting
 Node: 1, Time: +10.0s, Local time: +10.0s, Ipv4StaticRouting table
@@ -43,11 +50,12 @@ Node: 2, Time: +10.0s, Local time: +10.0s, Ipv4ListRouting table
 Node: 2, Time: +10.0s, Local time: +10.0s, OLSR Routing table
 Destination		NextHop		Interface	Distance
 195.1.1.1		195.1.1.1		1		1	
+195.1.1.2		195.1.1.1		1		2	
 195.1.1.4		195.1.2.4		2		1	
 195.1.1.5		195.1.2.4		2		2	
 195.1.1.6		195.1.2.4		2		2	
 195.1.2.1		195.1.1.1		1		1	
-195.1.2.2		195.1.2.4		2		2	
+195.1.2.2		195.1.1.1		1		2	
 195.1.2.4		195.1.2.4		2		1	
 195.1.2.5		195.1.2.4		2		2	
 195.1.2.6		195.1.2.4		2		2	
@@ -88,10 +96,17 @@ Node: 4, Time: +10.0s, Local time: +10.0s, Ipv4ListRouting table
   Priority: 10 Protocol: ns3::olsr::RoutingProtocol
 Node: 4, Time: +10.0s, Local time: +10.0s, OLSR Routing table
 Destination		NextHop		Interface	Distance
+195.1.1.4		195.1.1.4		1		1	
+195.1.1.6		195.1.1.4		1		2	
 195.1.1.7		195.1.2.7		2		1	
+195.1.1.8		195.1.2.7		2		2	
 195.1.1.9		195.1.2.7		2		2	
+195.1.2.2		195.1.1.4		1		2	
+195.1.2.3		195.1.1.4		1		2	
+195.1.2.4		195.1.1.4		1		1	
 195.1.2.6		195.1.2.7		2		2	
 195.1.2.7		195.1.2.7		2		1	
+195.1.2.8		195.1.2.7		2		2	
 195.1.2.9		195.1.2.7		2		2	
  HNA Routing Table: empty
   Priority: 0 Protocol: ns3::Ipv4StaticRouting
@@ -108,12 +123,14 @@ Destination		NextHop		Interface	Distance
 195.1.1.4		195.1.1.4		1		1	
 195.1.1.5		195.1.1.4		1		2	
 195.1.1.7		195.1.2.7		2		1	
+195.1.1.8		195.1.2.7		2		2	
 195.1.1.9		195.1.2.7		2		2	
 195.1.2.2		195.1.1.4		1		2	
 195.1.2.3		195.1.1.4		1		2	
 195.1.2.4		195.1.1.4		1		1	
 195.1.2.5		195.1.2.7		2		2	
 195.1.2.7		195.1.2.7		2		1	
+195.1.2.8		195.1.2.7		2		2	
 195.1.2.9		195.1.2.7		2		2	
  HNA Routing Table: empty
   Priority: 0 Protocol: ns3::Ipv4StaticRouting
@@ -127,13 +144,15 @@ Node: 6, Time: +10.0s, Local time: +10.0s, Ipv4ListRouting table
   Priority: 10 Protocol: ns3::olsr::RoutingProtocol
 Node: 6, Time: +10.0s, Local time: +10.0s, OLSR Routing table
 Destination		NextHop		Interface	Distance
-195.1.1.4		195.1.2.6		2		2	
+195.1.1.4		195.1.2.5		2		2	
 195.1.1.5		195.1.2.5		2		1	
 195.1.1.6		195.1.2.6		2		1	
+195.1.1.8		195.1.1.8		1		1	
 195.1.1.9		195.1.1.9		1		1	
-195.1.2.4		195.1.2.6		2		2	
+195.1.2.4		195.1.2.5		2		2	
 195.1.2.5		195.1.2.5		2		1	
 195.1.2.6		195.1.2.6		2		1	
+195.1.2.8		195.1.1.8		1		1	
 195.1.2.9		195.1.1.9		1		1	
 195.1.2.10		195.1.1.9		1		2	
  HNA Routing Table: empty
@@ -148,10 +167,17 @@ Node: 7, Time: +10.0s, Local time: +10.0s, Ipv4ListRouting table
   Priority: 10 Protocol: ns3::olsr::RoutingProtocol
 Node: 7, Time: +10.0s, Local time: +10.0s, OLSR Routing table
 Destination		NextHop		Interface	Distance
+195.1.1.7		195.1.1.7		1		1	
+195.1.1.9		195.1.1.7		1		2	
 195.1.1.10		195.1.2.10		2		1	
+195.1.1.11		195.1.2.10		2		2	
 195.1.1.12		195.1.2.10		2		2	
-195.1.2.9		195.1.2.10		2		2	
+195.1.2.5		195.1.1.7		1		2	
+195.1.2.6		195.1.1.7		1		2	
+195.1.2.7		195.1.1.7		1		1	
+195.1.2.9		195.1.1.7		1		2	
 195.1.2.10		195.1.2.10		2		1	
+195.1.2.11		195.1.2.10		2		2	
 195.1.2.12		195.1.2.10		2		2	
  HNA Routing Table: empty
   Priority: 0 Protocol: ns3::Ipv4StaticRouting
@@ -166,13 +192,16 @@ Node: 8, Time: +10.0s, Local time: +10.0s, Ipv4ListRouting table
 Node: 8, Time: +10.0s, Local time: +10.0s, OLSR Routing table
 Destination		NextHop		Interface	Distance
 195.1.1.7		195.1.1.7		1		1	
+195.1.1.8		195.1.1.7		1		2	
 195.1.1.10		195.1.2.10		2		1	
+195.1.1.11		195.1.2.10		2		2	
 195.1.1.12		195.1.2.10		2		2	
 195.1.2.5		195.1.1.7		1		2	
 195.1.2.6		195.1.1.7		1		2	
 195.1.2.7		195.1.1.7		1		1	
-195.1.2.8		195.1.2.10		2		2	
+195.1.2.8		195.1.1.7		1		2	
 195.1.2.10		195.1.2.10		2		1	
+195.1.2.11		195.1.2.10		2		2	
 195.1.2.12		195.1.2.10		2		2	
  HNA Routing Table: empty
   Priority: 0 Protocol: ns3::Ipv4StaticRouting
@@ -189,12 +218,14 @@ Destination		NextHop		Interface	Distance
 195.1.1.7		195.1.2.9		2		2	
 195.1.1.8		195.1.2.8		2		1	
 195.1.1.9		195.1.2.9		2		1	
+195.1.1.11		195.1.1.11		1		1	
 195.1.1.12		195.1.1.12		1		1	
 195.1.2.7		195.1.2.9		2		2	
 195.1.2.8		195.1.2.8		2		1	
 195.1.2.9		195.1.2.9		2		1	
+195.1.2.11		195.1.1.11		1		1	
 195.1.2.12		195.1.1.12		1		1	
-195.1.2.13		195.1.1.12		1		2	
+195.1.2.13		195.1.1.11		1		2	
  HNA Routing Table: empty
   Priority: 0 Protocol: ns3::Ipv4StaticRouting
 Node: 9, Time: +10.0s, Local time: +10.0s, Ipv4StaticRouting table
@@ -207,10 +238,17 @@ Node: 10, Time: +10.0s, Local time: +10.0s, Ipv4ListRouting table
   Priority: 10 Protocol: ns3::olsr::RoutingProtocol
 Node: 10, Time: +10.0s, Local time: +10.0s, OLSR Routing table
 Destination		NextHop		Interface	Distance
+195.1.1.10		195.1.1.10		1		1	
+195.1.1.12		195.1.1.10		1		2	
 195.1.1.13		195.1.2.13		2		1	
+195.1.1.14		195.1.2.13		2		2	
 195.1.1.15		195.1.2.13		2		2	
+195.1.2.8		195.1.1.10		1		2	
+195.1.2.9		195.1.1.10		1		2	
+195.1.2.10		195.1.1.10		1		1	
 195.1.2.12		195.1.2.13		2		2	
 195.1.2.13		195.1.2.13		2		1	
+195.1.2.14		195.1.2.13		2		2	
 195.1.2.15		195.1.2.13		2		2	
  HNA Routing Table: empty
   Priority: 0 Protocol: ns3::Ipv4StaticRouting
@@ -225,13 +263,16 @@ Node: 11, Time: +10.0s, Local time: +10.0s, Ipv4ListRouting table
 Node: 11, Time: +10.0s, Local time: +10.0s, OLSR Routing table
 Destination		NextHop		Interface	Distance
 195.1.1.10		195.1.1.10		1		1	
+195.1.1.11		195.1.1.10		1		2	
 195.1.1.13		195.1.2.13		2		1	
+195.1.1.14		195.1.2.13		2		2	
 195.1.1.15		195.1.2.13		2		2	
 195.1.2.8		195.1.1.10		1		2	
 195.1.2.9		195.1.1.10		1		2	
 195.1.2.10		195.1.1.10		1		1	
 195.1.2.11		195.1.2.13		2		2	
 195.1.2.13		195.1.2.13		2		1	
+195.1.2.14		195.1.2.13		2		2	
 195.1.2.15		195.1.2.13		2		2	
  HNA Routing Table: empty
   Priority: 0 Protocol: ns3::Ipv4StaticRouting
@@ -245,14 +286,16 @@ Node: 12, Time: +10.0s, Local time: +10.0s, Ipv4ListRouting table
   Priority: 10 Protocol: ns3::olsr::RoutingProtocol
 Node: 12, Time: +10.0s, Local time: +10.0s, OLSR Routing table
 Destination		NextHop		Interface	Distance
-195.1.1.10		195.1.2.12		2		2	
+195.1.1.10		195.1.2.11		2		2	
 195.1.1.11		195.1.2.11		2		1	
 195.1.1.12		195.1.2.12		2		1	
+195.1.1.14		195.1.1.14		1		1	
 195.1.1.15		195.1.1.15		1		1	
 195.1.2.1		195.1.1.15		1		2	
-195.1.2.10		195.1.2.12		2		2	
+195.1.2.10		195.1.2.11		2		2	
 195.1.2.11		195.1.2.11		2		1	
 195.1.2.12		195.1.2.12		2		1	
+195.1.2.14		195.1.1.14		1		1	
 195.1.2.15		195.1.1.15		1		1	
  HNA Routing Table: empty
   Priority: 0 Protocol: ns3::Ipv4StaticRouting
@@ -267,10 +310,17 @@ Node: 13, Time: +10.0s, Local time: +10.0s, Ipv4ListRouting table
 Node: 13, Time: +10.0s, Local time: +10.0s, OLSR Routing table
 Destination		NextHop		Interface	Distance
 195.1.1.1		195.1.2.1		2		1	
+195.1.1.2		195.1.2.1		2		2	
 195.1.1.3		195.1.2.1		2		2	
+195.1.1.13		195.1.1.13		1		1	
+195.1.1.15		195.1.1.13		1		2	
 195.1.2.1		195.1.2.1		2		1	
+195.1.2.2		195.1.2.1		2		2	
 195.1.2.3		195.1.2.1		2		2	
-195.1.2.15		195.1.2.1		2		2	
+195.1.2.11		195.1.1.13		1		2	
+195.1.2.12		195.1.1.13		1		2	
+195.1.2.13		195.1.1.13		1		1	
+195.1.2.15		195.1.1.13		1		2	
  HNA Routing Table: empty
   Priority: 0 Protocol: ns3::Ipv4StaticRouting
 Node: 13, Time: +10.0s, Local time: +10.0s, Ipv4StaticRouting table
@@ -284,14 +334,17 @@ Node: 14, Time: +10.0s, Local time: +10.0s, Ipv4ListRouting table
 Node: 14, Time: +10.0s, Local time: +10.0s, OLSR Routing table
 Destination		NextHop		Interface	Distance
 195.1.1.1		195.1.2.1		2		1	
+195.1.1.2		195.1.2.1		2		2	
 195.1.1.3		195.1.2.1		2		2	
 195.1.1.13		195.1.1.13		1		1	
+195.1.1.14		195.1.1.13		1		2	
 195.1.2.1		195.1.2.1		2		1	
+195.1.2.2		195.1.2.1		2		2	
 195.1.2.3		195.1.2.1		2		2	
 195.1.2.11		195.1.1.13		1		2	
 195.1.2.12		195.1.1.13		1		2	
 195.1.2.13		195.1.1.13		1		1	
-195.1.2.14		195.1.2.1		2		2	
+195.1.2.14		195.1.1.13		1		2	
  HNA Routing Table: empty
   Priority: 0 Protocol: ns3::Ipv4StaticRouting
 Node: 14, Time: +10.0s, Local time: +10.0s, Ipv4StaticRouting table

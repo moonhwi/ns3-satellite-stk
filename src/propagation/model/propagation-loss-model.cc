@@ -306,8 +306,19 @@ namespace ns3 {
 		 * lambda: wavelength (m)
 		 */
 		double distance = a->GetDistanceFrom( b );
+		if (AssNode.size()==0)
+		{
+			std::cout<<"fuck"<<"endl";
+			double	numerator	= m_lambda * m_lambda;
+			double	denominator	= 16 * M_PI * M_PI * distance * distance * m_systemLoss;
+			double	lossDb		= -10 * log10( numerator / denominator );
+			NS_LOG_DEBUG( a->GetObject<Node>()->GetId()<<" "<<b->GetObject<Node>()->GetId()<<" "<<Simulator::Now().GetSeconds());
+			return(txPowerDbm - std::max( lossDb, m_minLoss ) );
+		}
 		std::vector<int > a_father=AssNode[a->GetObject<Node>()->GetId()];
 		std::vector<int > b_father=AssNode[b->GetObject<Node>()->GetId()];
+		int bnumber=b->GetObject<Node>()->GetId();		
+		int anumber=a->GetObject<Node>()->GetId();
 		Ptr<Node>	nodea1	= NodeList::GetNode(a_father[0]);
 		Ptr<Object>	objecta1= nodea1;
 		Ptr<Node>	nodea2	= NodeList::GetNode(a_father[1]);
@@ -316,9 +327,16 @@ namespace ns3 {
 		Ptr<Object>	objectb1= nodeb1;
 		Ptr<Node>	nodeb2	= NodeList::GetNode(b_father[1]);
 		Ptr<Object>	objectb2= nodeb2;
-		
 		if (m_frequency==1.018e+10)//0--->10G 1--->5G
 		{
+			if(	(bnumber==a_father[0])&&(anumber==b_father[0])	)
+			{
+			double	numerator	= m_lambda * m_lambda;
+			double	denominator	= 16 * M_PI * M_PI * distance * distance * m_systemLoss;
+			double	lossDb		= -10 * log10( numerator / denominator );
+			NS_LOG_DEBUG( a->GetObject<Node>()->GetId()<<" "<<b->GetObject<Node>()->GetId()<<" "<<Simulator::Now().GetSeconds());
+			return(txPowerDbm - std::max( lossDb, m_minLoss ) );
+			}
 			double Distanceb_a1=b->GetDistanceFrom(objecta1->GetObject<MobilityModel>());
 			double Distancea_a1=a->GetDistanceFrom(objecta1->GetObject<MobilityModel>());
 			double Distancea_b1=a->GetDistanceFrom(objectb1->GetObject<MobilityModel>());
@@ -351,6 +369,14 @@ namespace ns3 {
 		}
 		else if (m_frequency==5.18e+09)
 		{
+			if(	(bnumber==a_father[1])&&(anumber==b_father[1]))
+			{
+			double	numerator	= m_lambda * m_lambda;
+			double	denominator	= 16 * M_PI * M_PI * distance * distance * m_systemLoss;
+			double	lossDb		= -10 * log10( numerator / denominator );
+			NS_LOG_DEBUG( a->GetObject<Node>()->GetId()<<" "<<b->GetObject<Node>()->GetId()<<" "<<Simulator::Now().GetSeconds());
+			return(txPowerDbm - std::max( lossDb, m_minLoss ) );
+			}
 			double Distanceb_a2=b->GetDistanceFrom(objecta2->GetObject<MobilityModel>());
 			double Distancea_a2=a->GetDistanceFrom(objecta2->GetObject<MobilityModel>());
 			double Distancea_b1=a->GetDistanceFrom(objectb1->GetObject<MobilityModel>());
